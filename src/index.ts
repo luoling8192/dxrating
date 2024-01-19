@@ -7,6 +7,7 @@
  *
  * Learn more at https://developers.cloudflare.com/workers/
  */
+import app from './app';
 
 export interface Env {
 	// Example binding to KV. Learn more at https://developers.cloudflare.com/workers/runtime-apis/kv/
@@ -27,6 +28,6 @@ export interface Env {
 
 export default {
 	async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
-		return new Response('Hello World!');
-	},
+		return await app.handle(request);
+	}
 };

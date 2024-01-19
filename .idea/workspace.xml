@@ -4,11 +4,25 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="61c698df-3946-4b1a-b16c-8d6635c1ce1e" name="Changes" comment="" />
+    <list default="true" id="61c698df-3946-4b1a-b16c-8d6635c1ce1e" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/app.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/b50/datasource.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/b50/functions.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/b50/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/plates.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.prettierrc" beforeDir="false" afterPath="$PROJECT_DIR$/.prettierrc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pnpm-lock.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pnpm-lock.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.ts" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GitToolBoxStore">
     <option name="projectConfigVersion" value="5" />
@@ -28,6 +42,7 @@
   "keyToString": {
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "main",
     "last_opened_file_path": "/Users/luoling8192/Projects/dxrating/src/assets",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -35,6 +50,7 @@
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_interpreter_path": "node",
     "nodejs_package_manager_path": "npm",
+    "prettier.import.notification.dismissed": "true",
     "settings.editor.selected.configurable": "settings.vue",
     "ts.external.directory.path": "/Users/luoling8192/Projects/dxrating/node_modules/typescript/lib",
     "vue.rearranger.settings.migration": "true"
@@ -43,6 +59,7 @@
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/assets" />
+      <recent name="$PROJECT_DIR$/src/b50" />
       <recent name="$PROJECT_DIR$/src" />
     </key>
   </component>
@@ -66,12 +83,23 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1705570240047</updated>
-      <workItem from="1705570240048" duration="9333000" />
+      <workItem from="1705570240048" duration="18403000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VueSettings">
     <option name="innerServiceType" value="TS_SERVICE" />
