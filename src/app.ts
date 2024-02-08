@@ -67,7 +67,7 @@ app.get('/api/genImage/:username', withParams, async ({ username }) => {
 	let i = 5 - rating.toString().length - 1;
 
 	let svg =
-		`<svg xmlns="http://www.w3.org/2000/svg">
+		`<svg xmlns="http://www.w3.org/2000/svg" width="100px" height="20px">
      	<image href="${plate}" x="0" y="0" height="1.2em"/>
     	 ${Array.from(rating.toString()).map((char) => {
 			i++;
