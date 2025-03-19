@@ -10,9 +10,6 @@
     "lint": "eslint src",
     "lint:fix": "eslint src --fix"
   },
-  "dependencies": {
-    "itty-router": "^5.0.18"
-  },
   "devDependencies": {
     "@antfu/eslint-config": "^4.10.1",
     "@cloudflare/workers-types": "^4.20250317.0",
