@@ -21,4 +21,4 @@ DxRating 地址：[https://dxrating.luoling.moe/](https://dxrating.luoling.moe/)
 
 使用前替换掉用户名就好啦～
 
-![Demo](./demo.jpg)
+![Demo](./assets/demo.jpg)
