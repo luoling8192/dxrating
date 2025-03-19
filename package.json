@@ -2,17 +2,23 @@
   "name": "dxrating",
   "version": "1.0.0",
   "private": true,
+  "packageManager": "pnpm@10.6.4",
   "scripts": {
     "deploy": "wrangler deploy",
     "dev": "wrangler dev",
-    "start": "wrangler dev"
-  },
-  "devDependencies": {
-    "@cloudflare/workers-types": "^4.20240117.0",
-    "typescript": "^5.3.3",
-    "wrangler": "^3.23.0"
+    "start": "wrangler dev",
+    "lint": "eslint src",
+    "lint:fix": "eslint src --fix"
   },
   "dependencies": {
-    "itty-router": "^4.0.27"
+    "itty-router": "^5.0.18"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "^4.10.1",
+    "@cloudflare/workers-types": "^4.20250317.0",
+    "eslint": "^9.22.0",
+    "eslint-plugin-format": "^1.0.1",
+    "typescript": "^5.8.2",
+    "wrangler": "^4.1.0"
   }
 }
