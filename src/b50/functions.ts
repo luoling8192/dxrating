@@ -1,4 +1,4 @@
-import type { IMusicChart } from './datasource'
+import type { ILuoXueMusicChart } from './datasource'
 
 // Enum of achievements thresholds for maimai DX rating calculation
 enum Achievement {
@@ -64,14 +64,14 @@ function computeRa(ds: number, achievement: number): number {
 }
 
 // Updates rating values for an array of music charts using the current algorithm
-export function updateRa(charts: Array<IMusicChart>): Array<IMusicChart> {
-  return charts.map((music: IMusicChart) => ({
+export function updateRa(charts: Array<ILuoXueMusicChart>): Array<ILuoXueMusicChart & { ra: number }> {
+  return charts.map((music: ILuoXueMusicChart) => ({
     ...music,
-    ra: computeRa(music.ds, music.achievements),
+    ra: computeRa(music.level_index, music.achievements),
   }))
 }
 
 // Calculates total rating from an array of music charts
-export function sumRa(charts: Array<IMusicChart>): number {
-  return charts.reduce((total: number, music: IMusicChart) => total + music.ra, 0)
+export function sumRa(charts: Array<ILuoXueMusicChart & { ra: number }>): number {
+  return charts.reduce((total: number, music) => total + music.ra, 0)
 }

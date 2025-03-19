@@ -1,15 +1,15 @@
 // https://github.com/ekkusu-3800mhz/maimai-b50-simulator
 // https://github.com/ekkusu-3800mhz/maimai-b50-simulator/pull/1
 
-import type { ILuoXueResponse, IMusicChart } from './datasource'
+import type { ILuoXueMusicChart, ILuoXueResponse } from './datasource'
 import { sumRa, updateRa } from './functions'
 
 export default (data: ILuoXueResponse) => {
-  // Convert standard charts to IMusicChart format and calculate top 35
-  const b35List: Array<IMusicChart> = updateRa(data.data.standard)
+  // Convert standard charts to ILuoXueMusicChart format and calculate top 35
+  const b35List: Array<ILuoXueMusicChart & { ra: number }> = updateRa(data.data.standard)
 
-  // Convert DX charts to IMusicChart format and calculate top 15 if available
-  const b15List: Array<IMusicChart> = data.data.dx ? updateRa(data.data.dx) : []
+  // Convert DX charts to ILuoXueMusicChart format and calculate top 15 if available
+  const b15List: Array<ILuoXueMusicChart & { ra: number }> = data.data.dx ? updateRa(data.data.dx) : []
 
   // Calculate rating by summing top scores
   const b35: number = sumRa(b35List)
