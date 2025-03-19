@@ -21,15 +21,15 @@ export default function Root() {
         </b>
         <h2>水鱼查分器 API</h2>
         <p>
-          获取 Rating 分数：<a href="https://dxrating.luoling.moe/api/getRating/689056381852418" target="_blank"
-            >https://dxrating.luoling.moe/api/getRating/689056381852418</a
+          获取 Rating 分数：<a href="https://dxrating.luoling.moe/api/getRating/luoling8192" target="_blank"
+            >https://dxrating.luoling.moe/api/getRating/luoling8192</a
           >
         </p>
         <p>
           生成 Rating 图片：<a
-            href="https://dxrating.luoling.moe/api/genImage/689056381852418"
+            href="https://dxrating.luoling.moe/api/genImage/luoling8192"
             target="_blank"
-            >https://dxrating.luoling.moe/api/genImage/689056381852418</a
+            >https://dxrating.luoling.moe/api/genImage/luoling8192</a
           >
         </p>
         <h2>落雪查分器 API</h2>

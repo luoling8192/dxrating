@@ -7,9 +7,9 @@
 
 ## 水鱼查分器 API
 
-获取 Rating 分数：[https://dxrating.luoling.moe/api/getRating/689056381852418](https://dxrating.luoling.moe/api/getRating/689056381852418)
+获取 Rating 分数：[https://dxrating.luoling.moe/api/getRating/luoling8192](https://dxrating.luoling.moe/api/getRating/luoling8192)
 
-生成 Rating 图片：[https://dxrating.luoling.moe/api/genImage/689056381852418](https://dxrating.luoling.moe/api/genImage/689056381852418)
+生成 Rating 图片：[https://dxrating.luoling.moe/api/genImage/luoling8192](https://dxrating.luoling.moe/api/genImage/luoling8192)
 
 ## 落雪查分器 API
 
