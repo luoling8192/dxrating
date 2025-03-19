@@ -1,22 +1,49 @@
-import { generateRatingSvg, getLuoxueData, getPlateId } from './luoxue'
-import b50 from './b50'
+import { divingFishB50, luoxueB50 } from './b50'
+import { generateRatingSvg, getPlateId } from './common'
+import { getDivingFishData } from './divingfish'
+import { getLuoxueData } from './luoxue'
 import plates from './plates'
+import Root from './root'
 
-export async function handleRequest(request: Request): Promise<Response> {
-  const url = new URL(request.url)
-  const path = url.pathname
+// Interface for rating data providers
+interface RatingProvider {
+  getData: (friendCode: string) => Promise<any>
+  getRating: (data: any) => number
+}
 
-  // Handle image generation
-  if (path.startsWith('/api/genImage/')) {
-    const friendCode = path.split('/').pop()
+// Base class for handling rating-related responses
+abstract class RatingHandler {
+  constructor(protected provider: RatingProvider) {}
+
+  protected validateFriendCode(friendCode: string): Response | null {
     if (!friendCode)
       return new Response('Missing friend code', { status: 400 })
+    return null
+  }
 
-    const data = await getLuoxueData(friendCode)
+  protected handleError(message: string): Response {
+    return new Response(JSON.stringify({ status: 'error', message }), { status: 400 })
+  }
+
+  protected async fetchRating(friendCode: string): Promise<number | string> {
+    const data = await this.provider.getData(friendCode)
     if (typeof data === 'string')
-      return new Response(JSON.stringify({ status: 'error', message: data }), { status: 400 })
+      return data
+    return this.provider.getRating(data)
+  }
+}
 
-    const rating = b50(data)
+// Handler for generating rating SVG images
+class ImageGenerationHandler extends RatingHandler {
+  async handle(friendCode: string): Promise<Response> {
+    const validationError = this.validateFriendCode(friendCode)
+    if (validationError)
+      return validationError
+
+    const rating = await this.fetchRating(friendCode)
+    if (typeof rating === 'string')
+      return this.handleError(rating)
+
     const plateId = getPlateId(rating) as keyof typeof plates
     const plate = plates[plateId]
     const svg = generateRatingSvg(rating, plate)
@@ -25,37 +52,69 @@ export async function handleRequest(request: Request): Promise<Response> {
       headers: { 'Content-Type': 'image/svg+xml' },
     })
   }
+}
 
-  // Handle rating lookup
-  if (path.startsWith('/api/getRating/')) {
-    const friendCode = path.split('/').pop()
-    if (!friendCode)
-      return new Response('Missing friend code', { status: 400 })
+// Handler for rating lookup responses
+class RatingLookupHandler extends RatingHandler {
+  async handle(friendCode: string): Promise<Response> {
+    const validationError = this.validateFriendCode(friendCode)
+    if (validationError)
+      return validationError
 
-    const data = await getLuoxueData(friendCode)
-    if (typeof data === 'string')
-      return new Response(JSON.stringify({ status: 'error', message: data }), { status: 400 })
+    const rating = await this.fetchRating(friendCode)
+    if (typeof rating === 'string')
+      return this.handleError(rating)
 
-    return new Response(JSON.stringify({ status: 'success', data: b50(data) }), {
+    return new Response(JSON.stringify({ status: 'success', data: rating }), {
       headers: { 'Content-Type': 'application/json' },
     })
   }
+}
 
-  // Handle root path
-  if (path === '/') {
-    return new Response(`
-<html lang="zh_CN">
-<head><title>DX-Rating 生成器</title></head>
-<body>
-<h1>欢迎使用洛灵酱的 DX-Rating 生成器！</h1>
-<b>注意，本生成器基于水鱼查分器 <a href="https://www.diving-fish.com/maimaidx/prober/" target="_blank">Diving-Fish</a>，使用前请先注册账号并上传数据。</b>
-<p>获取 Rating 分数：<a href="https://dxrating.luoling.moe/api/getRating/689056381852418" target="_blank">https://dxrating.luoling.moe/api/getRating/689056381852418</a></p>
-<p>生成 Rating 图片（可以嵌入到 Markdown 中使用）：<a href="https://dxrating.luoling.moe/api/genImage/689056381852418" target="_blank">https://dxrating.luoling.moe/api/genImage/689056381852418</a></p>
-<p>使用前替换掉用户名就好啦～</p>
-</body>
-</html>
-`, { headers: { 'Content-Type': 'text/html;charset=UTF-8' } })
-  }
+// Handles root path response
+function handleRoot(): Response {
+  return new Response(Root(), { headers: { 'Content-Type': 'text/html;charset=UTF-8' } })
+}
+
+// Helper functions for request handling
+function handleImageGeneration(
+  friendCode: string,
+  getData: (friendCode: string) => Promise<any>,
+  getRating: (data: any) => number,
+): Promise<Response> {
+  const handler = new ImageGenerationHandler({ getData, getRating })
+  return handler.handle(friendCode)
+}
+
+function handleRatingLookup(
+  friendCode: string,
+  getData: (friendCode: string) => Promise<any>,
+  getRating: (data: any) => number,
+): Promise<Response> {
+  const handler = new RatingLookupHandler({ getData, getRating })
+  return handler.handle(friendCode)
+}
+
+export async function handleRequest(request: Request): Promise<Response> {
+  const url = new URL(request.url)
+  const path = url.pathname
+  const friendCode = path.split('/').pop()
+
+  // Route requests to appropriate handlers
+  if (path.startsWith('/api/genImage/'))
+    return handleImageGeneration(friendCode!, getDivingFishData, divingFishB50)
+
+  if (path.startsWith('/api/getRating/'))
+    return handleRatingLookup(friendCode!, getDivingFishData, divingFishB50)
+
+  if (path.startsWith('/api/luoxue/genImage/'))
+    return handleImageGeneration(friendCode!, getLuoxueData, luoxueB50)
+
+  if (path.startsWith('/api/luoxue/getRating/'))
+    return handleRatingLookup(friendCode!, getLuoxueData, luoxueB50)
+
+  if (path === '/')
+    return handleRoot()
 
   // Handle 404
   return new Response(JSON.stringify({ status: 'error', message: 'Not Found' }), { status: 404 })

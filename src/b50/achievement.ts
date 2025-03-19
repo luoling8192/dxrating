@@ -1,6 +1,6 @@
-import type { ILuoXueMusicChart } from './datasource'
+import type { DivingFishMusicChart } from '../types/divingfish'
 
-// Enum of achievements thresholds for maimai DX rating calculation
+// Enum of achievements
 enum Achievement {
   C = 50.0,
   B = 60.0,
@@ -17,7 +17,7 @@ enum Achievement {
   SSSp = 100.5,
 }
 
-// Calculates rating value based on chart difficulty and achievement percentage
+// Splash+ rating algorithm
 // ref: https://github.com/Yuri-YuzuChaN/maimaiDX/blob/main/libraries/maimai_best_40.py#L406
 function computeRa(ds: number, achievement: number): number {
   let baseRa: number = 22.4
@@ -63,15 +63,21 @@ function computeRa(ds: number, achievement: number): number {
   return Math.floor(ds * (Math.min(100.5, achievement) / 100) * baseRa)
 }
 
-// Updates rating values for an array of music charts using the current algorithm
-export function updateRa(charts: Array<ILuoXueMusicChart>): Array<ILuoXueMusicChart & { ra: number }> {
-  return charts.map((music: ILuoXueMusicChart) => ({
-    ...music,
-    ra: computeRa(music.level_index, music.achievements),
-  }))
+// Use new algorithm to update chart data
+export function updateRa(charts: Array<DivingFishMusicChart>): Array<DivingFishMusicChart> {
+  const arr: Array<DivingFishMusicChart> = []
+  charts.forEach((music: DivingFishMusicChart) => {
+    music.ra = computeRa(music.ds, music.achievements)
+    arr.push(music)
+  })
+  return arr
 }
 
-// Calculates total rating from an array of music charts
-export function sumRa(charts: Array<ILuoXueMusicChart & { ra: number }>): number {
-  return charts.reduce((total: number, music) => total + music.ra, 0)
+// Sum rating in chart data array
+export function sumRa(charts: Array<DivingFishMusicChart>): number {
+  let ra: number = 0
+  charts.forEach((music: DivingFishMusicChart) => {
+    ra += music.ra
+  })
+  return ra
 }
