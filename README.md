@@ -1,5 +1,7 @@
 # 欢迎使用洛灵酱的 DX-Rating 生成器！
 
+DxRating 地址：[https://dxrating.luoling.moe/](https://dxrating.luoling.moe/)
+
 **本生成器支持以下查分器:**
 
 - [水鱼查分器 (Diving-Fish)](https://www.diving-fish.com/maimaidx/prober/) - 使用前请先注册账号并上传数据
