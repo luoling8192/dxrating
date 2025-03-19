@@ -1,103 +1,106 @@
-import { Router, withParams, json, error } from 'itty-router';
-import b50 from './b50';
-import { IResponse } from './b50/datasource';
-import plates from './plates';
+import type { ILuoXueResponse } from './b50/datasource'
+import { env } from 'cloudflare:workers'
+import { error, json, Router, withParams } from 'itty-router'
+import b50 from './b50'
+import plates from './plates'
 
-const app = Router();
+const app = Router()
 
-const getPlayerData = async (username: string): Promise<string | IResponse> => {
-	try {
-		const res = await fetch(
-			'https://www.diving-fish.com/api/maimaidxprober/query/player', {
-				method: 'POST',
-				body: JSON.stringify({
-					b50: true,
-					username: username
-				}),
-				headers: {
-					'content-type': 'application/json'
-				}
-			});
+async function getLuoxueData(username: string): Promise<string | ILuoXueResponse> {
+  try {
+    const res = await fetch(
+      `https://maimai.lxns.net/api/v0/maimai/player/${username}/bests`,
+      {
+        method: 'GET',
+        headers: {
+          Authorization: env.LUOXUE_API_KEY,
+        },
+      },
+    )
 
-		const data: any = await res.json();
+    const data: any = await res.json()
 
-		if (res.status !== 200) {
-			return data['message'];
-		}
+    if (res.status !== 200) {
+      return data.message
+    }
 
-		return data;
-	} catch (e) {
-		return (e as Error).message;
-	}
-};
+    return data
+  }
+  catch (e) {
+    return (e as Error).message
+  }
+}
 
-const getPlateId = (rating: number) => {
-	const levels = [
-		1000,
-		2000,
-		4000,
-		7000,
-		10000,
-		12000,
-		13000,
-		14000,
-		14500,
-		15000];
-	if (rating < levels[0]) return '01';
-	if (rating >= levels[9]) return '11';
-	for (let i = 0; i < 9; i++) {
-		if (rating >= levels[i] && rating < levels[i + 1])
-			return (i + 2).toString().padStart(2, '0');
-	}
+function getPlateId(rating: number) {
+  const levels = [
+    1000,
+    2000,
+    4000,
+    7000,
+    10000,
+    12000,
+    13000,
+    14000,
+    14500,
+    15000,
+  ]
+  if (rating < levels[0])
+    return '01'
+  if (rating >= levels[9])
+    return '11'
+  for (let i = 0; i < 9; i++) {
+    if (rating >= levels[i] && rating < levels[i + 1])
+      return (i + 2).toString().padStart(2, '0')
+  }
 
-	return '00'; // Never read
-};
+  return '00' // Never read
+}
 
 app.get('/api/genImage/:username', withParams, async ({ username }) => {
-	const data = await getPlayerData(username);
-	if (typeof data === 'string') {
-		return error(400, { status: 'error', message: data });
-	}
+  const data = await getLuoxueData(username)
+  if (typeof data === 'string') {
+    return error(400, { status: 'error', message: data })
+  }
 
-	const rating = b50(data);
+  const rating = b50(data)
 
-	// @ts-ignore
-	const plate = plates[getPlateId(rating)];
+  // @ts-ignore
+  const plate = plates[getPlateId(rating)]
 
-	let i = 5 - rating.toString().length - 1;
+  let i = 5 - rating.toString().length - 1
 
-	let svg =
-		`<svg xmlns="http://www.w3.org/2000/svg" width="100px" height="20px">
+  const svg
+		= `<svg xmlns="http://www.w3.org/2000/svg" width="100px" height="20px">
      	<image href="${plate}" x="0" y="0" height="1.2em"/>
     	 ${Array.from(rating.toString()).map((char) => {
-			i++;
-			return `<text
+          i++
+          return `<text
 											x="${4.9 + i * 0.8}em"
 											y="1.45em"
 											font-family="Monaco, 'JetBrains Mono', Monospaced, monospace"
 											font-size="0.6em"
 											fill="#FCD41B">
 									${char}
-								</text>`;
-		})}
-    </svg>`;
+								</text>`
+        })}
+    </svg>`
 
-	return new Response(svg, {
-		headers: { 'Content-Type': 'image/svg+xml' }
-	});
-});
+  return new Response(svg, {
+    headers: { 'Content-Type': 'image/svg+xml' },
+  })
+})
 
 app.get('/api/getRating/:username', withParams, async ({ username }) => {
-	const data = await getPlayerData(username);
-	if (typeof data === 'string') {
-		return error(400, { status: 'error', message: data });
-	}
+  const data = await getPlayerData(username)
+  if (typeof data === 'string') {
+    return error(400, { status: 'error', message: data })
+  }
 
-	return json({ status: 'success', data: b50(data) });
-});
+  return json({ status: 'success', data: b50(data) })
+})
 
 app.get('/', () => {
-	return new Response(`
+  return new Response(`
 <html lang="zh_CN">
 <head><title>DX-Rating 生成器</title></head>
 <body>
@@ -108,7 +111,7 @@ app.get('/', () => {
 <p>使用前替换掉用户名就好啦～</p>
 </body>
 </html>
-`, { headers: { 'Content-Type': 'text/html;charset=UTF-8' } });
-});
+`, { headers: { 'Content-Type': 'text/html;charset=UTF-8' } })
+})
 
-export default app;
+export default app

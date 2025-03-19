@@ -8,6 +8,9 @@ compatibility_date = "2024-01-17"
 # [vars]
 # MY_VARIABLE = "production_value"
 
+[vars]
+LUOXUE_API_KEY = "D8I0FnhSA9LAlvwj6G8gwlTDO4iTAVgAYChex30VX8A="
+
 # Bind a KV Namespace. Use KV as persistent storage for small key-value pairs.
 # Docs: https://developers.cloudflare.com/workers/runtime-apis/kv
 # [[kv_namespaces]]
