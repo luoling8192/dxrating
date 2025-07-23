@@ -22,5 +22,3 @@ DxRating 地址：[https://dxrating.luoling.moe/](https://dxrating.luoling.moe/)
 生成 Rating 图片：[https://dxrating.luoling.moe/api/luoxue/genImage/689056381852418](https://dxrating.luoling.moe/api/luoxue/genImage/689056381852418)
 
 使用前替换掉用户名就好啦～
-
-![Demo](./assets/demo.jpg)
