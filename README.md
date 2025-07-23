@@ -1,4 +1,4 @@
-# 欢迎使用洛灵酱的 DX-Rating 生成器！
+# DX-Rating
 
 [![DX-Rating](https://dxrating.luoling.moe/api/luoxue/genImage/689056381852418)](https://github.com/luoling8192/dxrating)
 
