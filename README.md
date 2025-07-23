@@ -1,5 +1,7 @@
 # 欢迎使用洛灵酱的 DX-Rating 生成器！
 
+[![DX-Rating](https://dxrating.luoling.moe/api/luoxue/genImage/689056381852418)](https://github.com/luoling8192/dxrating)
+
 DxRating 地址：[https://dxrating.luoling.moe/](https://dxrating.luoling.moe/)
 
 **本生成器支持以下查分器:**
